@@ -27,6 +27,13 @@ class Loan extends Model {
 	}
 
 	/**
+	 * Get the status of the loan.
+	 */
+	public function status(): BelongsTo {
+		return $this->belongsTo(Status::class);
+	}
+
+	/**
 	 * Get the fees created to pay the loan.
 	 */
 	public function fees(): HasMany {

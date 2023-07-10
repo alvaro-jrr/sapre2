@@ -22,6 +22,11 @@ return new class extends Migration {
 				->constrained()
 				->cascadeOnDelete();
 
+			$table
+				->foreignId("status_id")
+				->constrained()
+				->cascadeOnDelete();
+
 			$table->double("amount");
 			$table->double("interest_rate");
 			$table->integer("number_of_fees");
