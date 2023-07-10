@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Modality extends Model {
 	use HasFactory;
 
-	protected $fillable = ["name"];
+	protected $fillable = ["name", "slug"];
 
 	/**
 	 * Get the loans that use this modality.
