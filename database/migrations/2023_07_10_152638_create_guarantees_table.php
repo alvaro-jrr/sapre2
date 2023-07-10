@@ -17,6 +17,8 @@ return new class extends Migration {
 				->constrained()
 				->cascadeOnDelete();
 
+			$table->string("description");
+			$table->double("estimated_price");
 			$table->timestamps();
 		});
 	}

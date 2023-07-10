@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Guarantee extends Model {
 	use HasFactory;
 
+	protected $fillable = ["description", "estimated_price"];
+
 	/**
 	 * Get the loan that stores this guarantee.
 	 */
