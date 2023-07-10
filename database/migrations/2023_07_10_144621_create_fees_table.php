@@ -17,6 +17,8 @@ return new class extends Migration {
 				->constrained()
 				->cascadeOnDelete();
 
+			$table->double("amount");
+			$table->date("expiration_date");
 			$table->timestamps();
 		});
 	}
