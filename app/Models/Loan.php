@@ -15,4 +15,11 @@ class Loan extends Model {
 	public function user(): BelongsTo {
 		return $this->belongsTo(User::class);
 	}
+
+	/**
+	 * Get the modality used by the loan.
+	 */
+	public function modality(): BelongsTo {
+		return $this->belongsTo(Modality::class);
+	}
 }

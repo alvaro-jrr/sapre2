@@ -17,6 +17,11 @@ return new class extends Migration {
 				->constrained()
 				->cascadeOnDelete();
 
+			$table
+				->foreignId("modality_id")
+				->constrained()
+				->cascadeOnDelete();
+
 			$table->timestamps();
 		});
 	}
