@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Loan extends Model {
 	use HasFactory;
 
+	protected $fillable = ["amount", "interest_rate", "number_of_fees"];
+
 	/**
 	 * Get the user that owns the loan.
 	 */
