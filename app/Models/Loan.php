@@ -32,4 +32,11 @@ class Loan extends Model {
 	public function fees(): HasMany {
 		return $this->hasMany(Fee::class);
 	}
+
+	/**
+	 * Get the guarantees stored for the loan.
+	 */
+	public function guarantees(): HasMany {
+		return $this->hasMany(Guarantee::class);
+	}
 }
