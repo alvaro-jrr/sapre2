@@ -63,6 +63,18 @@ export default function Create({
 							/>
 
 							<TextField
+								id="number_of_fees"
+								labelProps={{ children: "Número de Cuotas" }}
+								inputProps={{
+									name: "number_of_fees",
+									type: "number",
+									placeholder: "ej: 1",
+									autoComplete: "off",
+									min: 1,
+								}}
+							/>
+
+							<TextField
 								id="interest_rate"
 								labelProps={{ children: "Tasa de Interés (%)" }}
 								inputProps={{
