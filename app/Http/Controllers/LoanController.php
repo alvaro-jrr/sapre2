@@ -57,6 +57,23 @@ class LoanController extends Controller {
 	 */
 	public function store(Request $request) {
 		//
+		$validate = $request->validate([
+			"client" => "required|exists:users,id",
+			"amount" => "required|numeric|min:1",
+			"modality" => "required|exists:modalities,id",
+			"interest_rate" => "required|numeric|between:1,100",
+			"number_of_fees" => "required|numeric|min:1",
+		]);
+
+		$loan = Loan::create([
+			"user_id" => $validate["client"],
+			"amount" => $validate["amount"],
+			"modality_id" => $validate["modality"],
+			"interest_rate" => $validate["interest_rate"],
+			"number_of_fees" => $validate["number_of_fees"],
+		]);
+
+		return redirect(route("loans.index"));
 	}
 
 	/**
