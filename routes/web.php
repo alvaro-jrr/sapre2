@@ -88,6 +88,10 @@ Route::middleware("auth")->group(function () {
 		->only(["index"])
 		->middleware("permission:view loans|view own loans");
 
+	Route::resource("loans", LoanController::class)
+		->only(["create", "store"])
+		->middleware("can:create loans");
+
 	Route::get("loans/request", [LoanController::class, "request"])
 		->name("loans.request")
 		->middleware("can:request loans");

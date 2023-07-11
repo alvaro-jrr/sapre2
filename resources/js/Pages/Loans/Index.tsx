@@ -6,6 +6,8 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 
 export default function Index({ auth }: PageProps) {
+	const canCreateLoans = can(auth.user, "create loans");
+
 	return (
 		<AuthenticatedLayout
 			user={auth.user}
@@ -14,13 +16,28 @@ export default function Index({ auth }: PageProps) {
 					title="Préstamos"
 					description="Administra los préstamos solicitados."
 					actions={
-						can(auth.user, "request loans") ? (
-							<Button asChild>
-								<Link href={route("loans.request")}>
-									Solicitar préstamo
-								</Link>
-							</Button>
-						) : null
+						<>
+							{canCreateLoans ? (
+								<Button asChild>
+									<Link href={route("loans.create")}>
+										Crear préstamo
+									</Link>
+								</Button>
+							) : null}
+
+							{can(auth.user, "request loans") ? (
+								<Button
+									variant={
+										canCreateLoans ? "secondary" : "default"
+									}
+									asChild
+								>
+									<Link href={route("loans.request")}>
+										Solicitar préstamo
+									</Link>
+								</Button>
+							) : null}
+						</>
 					}
 				/>
 			}

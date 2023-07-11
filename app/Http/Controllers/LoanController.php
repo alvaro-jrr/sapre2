@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modality;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -13,33 +14,35 @@ use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LoanController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $user = Auth::user();
+class LoanController extends Controller {
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index() {
+		$user = Auth::user();
+		$loans = [];
 
-        $loans = [];
+		if ($user->can("view loans")) {
+			$loans = Loan::all();
+		}
 
-        if($user->can("view loans")){
-            $loans = Loan::all();
-        }
+		if ($user->can("view own loans")) {
+			$loans = Loan::all()->where("user_id", "=", $user->id);
+		}
 
-        if($user->can("view own loans")){
-            $loans = Loan::all()->where("user_id", "=", $user->id);
-        }
-
-        return Inertia::render("Loans/Index", []);
-    }
+		return Inertia::render("Loans/Index", [
+			"loans" => $loans,
+		]);
+	}
 
 	/**
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		//
+		return Inertia::render("Loans/Create", [
+			"users" => User::permission("request loans")->get(),
+			"modalities" => Modality::all(),
+		]);
 	}
 
 	/**
