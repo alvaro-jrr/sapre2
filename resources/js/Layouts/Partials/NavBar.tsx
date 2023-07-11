@@ -9,12 +9,12 @@ import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import UserNav from "@/Components/UserNav";
 import { Button } from "@/Components/ui/button";
-import { can, cn } from "@/lib/utils";
+import { can, canDoAny, cn } from "@/lib/utils";
 
 const links: {
 	title: string;
 	href: string;
-	permission?: string;
+	permission?: string | string[];
 	baseRoute?: string;
 }[] = [
 	{
@@ -33,7 +33,21 @@ const links: {
 		permission: "view roles",
 		baseRoute: "/roles",
 	},
+	{
+		title: "Préstamos",
+		href: "loans.index",
+		permission: ["view loans", "view own loans"],
+		baseRoute: "/loans",
+	},
 ];
+
+const hasPermission = (user: UserWithRoles, permission?: string | string[]) => {
+	if (!permission) return true;
+
+	if (typeof permission === "string") return can(user, permission);
+
+	return canDoAny(user, permission);
+};
 
 function Menu({
 	className,
@@ -47,9 +61,8 @@ function Menu({
 	return (
 		<ul className={cn("flex items-center", className)} {...props}>
 			{links.map(({ title, href, permission, baseRoute }) => {
-				if (permission && !can(user, permission)) {
-					return null;
-				}
+				// Hide in case user doesn't have any of the permissions
+				if (!hasPermission(user, permission)) return null;
 
 				return (
 					<li className="block" key={href}>
@@ -82,7 +95,8 @@ function MobileMenu({
 		<div className={cn("flex flex-col gap-4", className)} {...props}>
 			<ul className="flex-col gap-4">
 				{links.map(({ title, href, permission, baseRoute }) => {
-					if (permission && !can(user, permission)) return null;
+					// Hide in case user doesn't have any of the permissions
+					if (!hasPermission(user, permission)) return null;
 
 					return (
 						<li key={href}>

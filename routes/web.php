@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -79,6 +80,12 @@ Route::middleware("auth")->group(function () {
 	Route::resource("roles", RoleController::class)
 		->only(["destroy"])
 		->middleware("can:delete roles");
+});
+
+Route::middleware("auth")->group(function () {
+	Route::resource("loans", LoanController::class)
+		->only(["index"])
+		->middleware("permission:view loans|view own loans");
 });
 
 require __DIR__ . "/auth.php";

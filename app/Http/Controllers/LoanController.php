@@ -32,56 +32,50 @@ class LoanController extends Controller
             $loans = Loan::all()->where("user_id", "=", $user->id);
         }
 
-        return response($loans);
+        return Inertia::render("Loans/Index", []);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 */
+	public function create() {
+		//
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 */
+	public function store(Request $request) {
+		//
+	}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Loan $loan)
-    {
-        //
-    }
+	/**
+	 * Display the specified resource.
+	 */
+	public function show(Loan $loan) {
+		//
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Loan $loan)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 */
+	public function edit(Loan $loan) {
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Loan $loan)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 */
+	public function update(Request $request, Loan $loan) {
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Loan $loan)
-    {
-        $loan->delete();
+	/**
+	 * Remove the specified resource from storage.
+	 */
+	public function destroy(Loan $loan) {
+		$loan->delete();
 
 		return redirect(route("loans.index"));
-    }
+	}
 }
