@@ -60,6 +60,8 @@ class LoanController extends Controller
      */
     public function destroy(Loan $loan)
     {
-        //
+        $loan->delete();
+
+		return redirect(route("loans.index"));
     }
 }
