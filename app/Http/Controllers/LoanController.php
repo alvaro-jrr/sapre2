@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class LoanController extends Controller {
 	/**
@@ -19,6 +20,13 @@ class LoanController extends Controller {
 	 */
 	public function create() {
 		//
+	}
+
+	/**
+	 * Show the form for creating a new loan request.
+	 */
+	public function request(): Response {
+		return Inertia::render("Loans/Request", []);
 	}
 
 	/**
