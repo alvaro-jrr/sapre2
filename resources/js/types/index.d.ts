@@ -35,6 +35,12 @@ export interface Permission extends Pick<Role, "id" | "name" | "guard_name"> {
 	updated_at: null;
 }
 
+export interface Modality {
+	id: number;
+	name: string;
+	slug: string;
+}
+
 export type PageProps<
 	T extends Record<string, unknown> = Record<string, unknown>
 > = T & {

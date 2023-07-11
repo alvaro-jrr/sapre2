@@ -18,14 +18,13 @@ export default function Create({
 	rolePermissions: { [key: string]: boolean };
 }>) {
 	// Form controls
-	const { data, setData, post, processing, errors, clearErrors, transform } =
-		useForm<{
-			name: string;
-			[key: string]: boolean | string;
-		}>({
-			name: "",
-			...rolePermissions,
-		});
+	const { data, setData, post, processing, errors } = useForm<{
+		name: string;
+		[key: string]: boolean | string;
+	}>({
+		name: "",
+		...rolePermissions,
+	});
 
 	// Submits the new role
 	const submit: FormEventHandler = (event) => {
