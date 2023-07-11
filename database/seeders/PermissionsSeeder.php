@@ -30,6 +30,7 @@ class PermissionsSeeder extends Seeder {
 			"delete roles",
 
 			// Loans
+			"create loans",
 			"request loans",
 			"view loans",
 			"view own loans",
@@ -70,6 +71,7 @@ class PermissionsSeeder extends Seeder {
 			"delete roles",
 
 			// Loans
+			"create loans",
 			"view loans",
 			"edit loans",
 			"approve or decline loans",
@@ -88,6 +90,7 @@ class PermissionsSeeder extends Seeder {
 			"view users",
 
 			// Loans
+			"create loans",
 			"view loans",
 			"approve or decline loans",
 			"download contracts",
