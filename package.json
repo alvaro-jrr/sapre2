@@ -39,6 +39,7 @@
 		"@tanstack/react-table": "^8.9.3",
 		"class-variance-authority": "^0.6.1",
 		"clsx": "^1.2.1",
+		"date-fns": "^2.30.0",
 		"lucide-react": "^0.256.0",
 		"tailwind-merge": "^1.13.2",
 		"tailwindcss-animate": "^1.0.6"

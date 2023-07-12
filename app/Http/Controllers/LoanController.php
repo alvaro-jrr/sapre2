@@ -18,13 +18,21 @@ class LoanController extends Controller {
 	public function index() {
 		$user = Auth::user();
 		$loans = [];
+		$hidden = ["user_id", "modality_id", "status_id"];
 
 		if ($user->can("view loans")) {
-			$loans = Loan::all();
+			$loans = Loan::with(["user:id,name,email", "modality", "status"])
+				->latest()
+				->get()
+				->makeHidden($hidden);
 		}
 
 		if ($user->can("view own loans")) {
-			$loans = Loan::all()->where("user_id", "=", $user->id);
+			$loans = Loan::with(["modality", "status"])
+				->where("user_id", "=", $user->id)
+				->latest()
+				->get()
+				->makeHidden($hidden);
 		}
 
 		return Inertia::render("Loans/Index", [

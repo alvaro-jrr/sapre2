@@ -41,6 +41,20 @@ export interface Modality {
 	slug: string;
 }
 
+export type Status = Modality;
+
+export interface Loan {
+	id: number;
+	user_id: number;
+	modality_id: number;
+	status_id: number;
+	amount: number;
+	interest_rate: number;
+	number_of_fees: number;
+	created_at: string;
+	updated_at: string;
+}
+
 export type PageProps<
 	T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
