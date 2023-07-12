@@ -142,7 +142,7 @@ export default function Create({
 								</Link>
 							</Button>
 
-							<Button>Crear</Button>
+							<Button disabled={processing}>Crear</Button>
 						</div>
 					</form>
 				</CardContent>

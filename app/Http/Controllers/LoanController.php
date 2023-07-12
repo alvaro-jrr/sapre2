@@ -61,15 +61,21 @@ class LoanController extends Controller {
 			"number_of_fees" => "required|numeric|min:1",
 		]);
 
-		// Create a new active loan
-		Loan::create([
-			"user_id" => $validate["client"],
-			"modality_id" => $validate["modality"],
-			"status_id" => Status::firstWhere("slug", "active")->id,
+		$loan = new Loan([
 			"amount" => $validate["amount"],
 			"interest_rate" => $validate["interest_rate"],
 			"number_of_fees" => $validate["number_of_fees"],
 		]);
+
+		// Associate models
+		$loan->user()->associate($validate["client"]);
+		$loan->modality()->associate($validate["modality"]);
+
+		$status = Status::firstWhere("slug", "active");
+		$loan->status()->associate($status);
+
+		// Store the loan
+		$loan->save();
 
 		return redirect(route("loans.index"));
 	}
