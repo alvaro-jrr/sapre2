@@ -68,7 +68,7 @@ const columns: ColumnDef<LoanDisplay>[] = [
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="N. de Cuotas" />
 		),
-		cell: ({ row }) => row.getValue("interest_rate"),
+		cell: ({ row }) => row.getValue("number_of_fees"),
 		enableHiding: false,
 	},
 	{
