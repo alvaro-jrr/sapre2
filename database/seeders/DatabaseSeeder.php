@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder {
 			PermissionsSeeder::class,
 			UserSeeder::class,
 			ModalitiesSeeder::class,
+			StatusesSeeder::class,
 		]);
 	}
 }
