@@ -103,6 +103,7 @@ export default function Create({
 									placeholder: "ej: 1",
 									autoComplete: "off",
 									min: 1,
+									value: data.number_of_fees,
 									onChange: (e) =>
 										setData(
 											"number_of_fees",
@@ -124,6 +125,7 @@ export default function Create({
 									step: "any",
 									min: 0,
 									max: 100,
+									value: data.interest_rate,
 									onChange: (e) =>
 										setData(
 											"interest_rate",
