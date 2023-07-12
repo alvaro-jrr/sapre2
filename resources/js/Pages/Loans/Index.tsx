@@ -7,7 +7,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { can } from "@/lib/utils";
 import { Loan, Modality, PageProps, Status, User } from "@/types";
 import { Head, Link } from "@inertiajs/react";
-import { ColumnDef } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 
 type LoanDisplay = Omit<Loan, "user_id" | "modality_id" | "status_id"> & {
@@ -16,88 +16,80 @@ type LoanDisplay = Omit<Loan, "user_id" | "modality_id" | "status_id"> & {
 	status: Status;
 };
 
+const columnHelper = createColumnHelper<LoanDisplay>();
+
 // The columns to display
-const columns: ColumnDef<LoanDisplay>[] = [
-	{
-		accessorKey: "created_at",
+const columns = [
+	columnHelper.accessor("created_at", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Fecha" />
 		),
-		cell: ({ row }) => {
-			return format(new Date(row.getValue("created_at")), "dd/MM/yyyy");
+		cell: (info) => {
+			const date = info.getValue();
+
+			return format(new Date(date), "dd/MM/yyyy");
 		},
 		enableHiding: false,
 		enableSorting: false,
-	},
-	{
-		accessorKey: "user",
+	}),
+	columnHelper.accessor("user", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Cliente" />
 		),
-		cell: ({ row }) => {
-			const user: LoanDisplay["user"] = row.getValue("user");
+		cell: (info) => {
+			const user = info.getValue();
 
 			return `${user.name} (${user.email})`;
 		},
 		enableHiding: false,
 		enableSorting: false,
-	},
-	{
-		accessorKey: "amount",
+	}),
+	columnHelper.accessor("amount", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Cantidad" />
 		),
-		cell: ({ row }) => row.getValue("amount"),
+		cell: (info) => info.getValue(),
 		enableHiding: false,
-	},
-	{
-		accessorKey: "modality",
+	}),
+	columnHelper.accessor("modality.name", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Modalidad" />
 		),
-		cell: ({ row }) => {
-			const modality: LoanDisplay["modality"] = row.getValue("modality");
-
-			return modality.name;
-		},
+		cell: (info) => info.getValue(),
 		enableHiding: false,
 		enableSorting: false,
-	},
-	{
-		accessorKey: "number_of_fees",
+	}),
+	columnHelper.accessor("number_of_fees", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="N. de Cuotas" />
 		),
-		cell: ({ row }) => row.getValue("number_of_fees"),
+		cell: (info) => info.getValue(),
 		enableHiding: false,
-	},
-	{
-		accessorKey: "interest_rate",
+	}),
+	columnHelper.accessor("interest_rate", {
 		header: ({ column }) => (
 			<DataTableColumnHeader
 				column={column}
 				title="Tasa de Interés (%)"
 			/>
 		),
-		cell: ({ row }) => row.getValue("interest_rate"),
+		cell: (info) => info.getValue(),
 		enableHiding: false,
-	},
-	{
-		accessorKey: "status",
+	}),
+	columnHelper.accessor("status.name", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Estatus" />
 		),
-		cell: ({ row }) => {
-			const status: LoanDisplay["status"] = row.getValue("status");
-
-			return <Badge variant="secondary">{status.name}</Badge>;
+		cell: (info) => {
+			return <Badge variant="secondary">{info.getValue()}</Badge>;
 		},
 		enableSorting: false,
 		enableHiding: false,
-	},
+	}),
 ];
 
-const clientColumns = columns.filter((column) => {
+// Remove user column when displaying own loans
+const ownLoansColumns = columns.filter((column) => {
 	// @ts-ignore
 	const accessorKey = column.accessorKey ?? "";
 
@@ -151,7 +143,7 @@ export default function Index({
 			<DataTable
 				data={loans}
 				columns={
-					can(auth.user, "view own loans") ? clientColumns : columns
+					can(auth.user, "view own loans") ? ownLoansColumns : columns
 				}
 			/>
 		</AuthenticatedLayout>

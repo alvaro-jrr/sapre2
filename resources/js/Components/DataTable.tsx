@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Table as TableType } from "@tanstack/react-table";
+import { InitialTableState, Table as TableType } from "@tanstack/react-table";
 
 import {
 	ColumnDef,
@@ -28,9 +28,10 @@ import {
 
 import { DataTablePagination } from "./DataTablePagination";
 
-interface DataTableProps<TData, TValue, ToolbarProps> {
-	columns: ColumnDef<TData, TValue>[];
+interface DataTableProps<TData, ToolbarProps> {
+	columns: ColumnDef<TData, any>[];
 	data: TData[];
+	initialState?: InitialTableState;
 	toolbarProps?: ToolbarProps;
 	Toolbar?: (
 		props:
@@ -39,12 +40,13 @@ interface DataTableProps<TData, TValue, ToolbarProps> {
 	) => React.ReactNode;
 }
 
-export function DataTable<TData, TValue, ToolbarProps>({
+export function DataTable<TData, ToolbarProps>({
 	columns,
 	data,
+	initialState,
 	toolbarProps,
 	Toolbar,
-}: DataTableProps<TData, TValue, ToolbarProps>) {
+}: DataTableProps<TData, ToolbarProps>) {
 	const [columnVisibility, setColumnVisibility] =
 		React.useState<VisibilityState>({});
 
@@ -61,6 +63,7 @@ export function DataTable<TData, TValue, ToolbarProps>({
 			columnVisibility,
 			columnFilters,
 		},
+		initialState: initialState,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
 		onColumnVisibilityChange: setColumnVisibility,
