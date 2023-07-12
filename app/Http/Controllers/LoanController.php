@@ -6,11 +6,7 @@ use App\Models\Modality;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Permission;
 use App\Models\Loan;
-use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -56,7 +52,6 @@ class LoanController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
-		//
 		$validate = $request->validate([
 			"client" => "required|exists:users,id",
 			"amount" => "required|numeric|min:1",
@@ -65,7 +60,7 @@ class LoanController extends Controller {
 			"number_of_fees" => "required|numeric|min:1",
 		]);
 
-		$loan = Loan::create([
+		Loan::create([
 			"user_id" => $validate["client"],
 			"amount" => $validate["amount"],
 			"modality_id" => $validate["modality"],
