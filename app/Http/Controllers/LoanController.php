@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Modality;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -60,10 +61,12 @@ class LoanController extends Controller {
 			"number_of_fees" => "required|numeric|min:1",
 		]);
 
+		// Create a new active loan
 		Loan::create([
 			"user_id" => $validate["client"],
-			"amount" => $validate["amount"],
 			"modality_id" => $validate["modality"],
+			"status_id" => Status::firstWhere("slug", "active")->id,
+			"amount" => $validate["amount"],
 			"interest_rate" => $validate["interest_rate"],
 			"number_of_fees" => $validate["number_of_fees"],
 		]);
