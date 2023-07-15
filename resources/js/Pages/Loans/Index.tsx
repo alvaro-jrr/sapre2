@@ -32,6 +32,21 @@ const columns = [
 		enableHiding: false,
 		enableSorting: false,
 	}),
+	columnHelper.accessor("approved_date", {
+		header: ({ column }) => (
+			<DataTableColumnHeader
+				column={column}
+				title="Fecha de Aprobación"
+			/>
+		),
+		cell: (info) => {
+			const date = info.getValue();
+
+			return format(new Date(date), "dd/MM/yyyy");
+		},
+		enableHiding: false,
+		enableSorting: false,
+	}),
 	columnHelper.accessor("user", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Cliente" />
@@ -44,13 +59,7 @@ const columns = [
 		enableHiding: false,
 		enableSorting: false,
 	}),
-	columnHelper.accessor("amount", {
-		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Cantidad" />
-		),
-		cell: (info) => info.getValue(),
-		enableHiding: false,
-	}),
+
 	columnHelper.accessor("modality.name", {
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Modalidad" />
@@ -68,10 +77,7 @@ const columns = [
 	}),
 	columnHelper.accessor("interest_rate", {
 		header: ({ column }) => (
-			<DataTableColumnHeader
-				column={column}
-				title="Tasa de Interés (%)"
-			/>
+			<DataTableColumnHeader column={column} title="Tasa (%)" />
 		),
 		cell: (info) => info.getValue(),
 		enableHiding: false,

@@ -51,6 +51,7 @@ export interface Loan {
 	amount: number;
 	interest_rate: number;
 	number_of_fees: number;
+	approved_date: string;
 	created_at: string;
 	updated_at: string;
 }

@@ -73,6 +73,7 @@ class LoanController extends Controller {
 			"amount" => $validate["amount"],
 			"interest_rate" => $validate["interest_rate"],
 			"number_of_fees" => $validate["number_of_fees"],
+			"approved_date" => now(),
 		]);
 
 		// Associate models

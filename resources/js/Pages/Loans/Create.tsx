@@ -116,7 +116,10 @@ export default function Create({
 
 							<TextField
 								id="interest_rate"
-								labelProps={{ children: "Tasa de Interés (%)" }}
+								labelProps={{
+									children:
+										"Tasa de Interés Efectiva Anual (%)",
+								}}
 								inputProps={{
 									name: "interest_rate",
 									type: "number",
