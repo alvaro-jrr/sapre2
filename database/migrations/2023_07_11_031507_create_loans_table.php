@@ -30,6 +30,7 @@ return new class extends Migration {
 			$table->double("amount");
 			$table->double("interest_rate");
 			$table->integer("number_of_fees");
+			$table->dateTime("approved_date");
 
 			$table->timestamps();
 		});
