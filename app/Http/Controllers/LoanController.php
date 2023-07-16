@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fee;
 use App\Models\Modality;
 use App\Models\Status;
+use DateInterval;
+use DateTime;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -83,10 +86,102 @@ class LoanController extends Controller {
 		$status = Status::firstWhere("slug", "active");
 		$loan->status()->associate($status);
 
-		// Store the loan
+		// Store the loan and create associated fees
 		$loan->save();
+		$this->createFees($loan);
 
 		return redirect(route("loans.index"));
+	}
+
+	/**
+	 * Create the fees based on the loan parameters.
+	 */
+	private function createFees(Loan $loan) {
+		// Avoid fee creation of non approved loans
+		if (is_null($loan->approved_date)) {
+			return;
+		}
+
+		$feeAmount = $this->calculateFeeAmount($loan);
+		$numberOfFees = $loan->number_of_fees;
+		$modalitySlug = $loan->modality->slug;
+		$approvedDate = new DateTime($loan->approved_date);
+		$latestExpireDate = null;
+
+		for ($feeCount = 0; $feeCount < $numberOfFees; $feeCount++) {
+			$nextExpireDate = $latestExpireDate;
+
+			if (is_null($latestExpireDate)) {
+				$nextExpireDate = $approvedDate;
+			}
+
+			// Set the interval based on modality
+			switch ($modalitySlug) {
+				case "monthly":
+					// 1 month interval
+					$intervalToAdd = new DateInterval("P1M");
+					break;
+
+				case "biweekly":
+					// 15 days interval
+					$intervalToAdd = new DateInterval("P15D");
+					break;
+
+				default:
+					// 1 year interval
+					$intervalToAdd = new DateInterval("P1Y");
+			}
+
+			$nextExpireDate->add($intervalToAdd);
+
+			// Create fee with the expire date calculated
+			$fee = new Fee([
+				"amount" => $feeAmount,
+				"expiration_date" => $nextExpireDate,
+			]);
+
+			$fee->loan()->associate($loan);
+			$fee->save();
+		}
+	}
+
+	/**
+	 * Calculates the amount to pay for each fee.
+	 */
+	private function calculateFeeAmount(Loan $loan): float {
+		$rate = $this->getRateByModality($loan);
+
+		$numerator = $loan->amount * $rate;
+		$denominator = 1 - (1 + $rate) ** -$loan->number_of_fees;
+
+		return round($numerator / $denominator, 2);
+	}
+
+	/**
+	 * Gets the rate based on the loan modality.
+	 */
+	private function getRateByModality(Loan $loan): float {
+		$modality = $loan->modality;
+
+		// Returns the same interest rate as it's already yearly
+		if ($modality->slug == "yearly") {
+			return $loan->interest_rate / 100;
+		}
+
+		$periodsByYear = 1;
+
+		switch ($modality->slug) {
+			case "biweekly":
+				$periodsByYear = 24;
+				break;
+
+			case "monthly":
+				$periodsByYear = 12;
+				break;
+		}
+
+		// Converts interest to rate according to the modality selected
+		return (1 + $loan->interest_rate / 100) ** (1 / $periodsByYear) - 1;
 	}
 
 	/**

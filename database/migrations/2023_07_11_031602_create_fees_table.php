@@ -18,7 +18,7 @@ return new class extends Migration {
 				->cascadeOnDelete();
 
 			$table->double("amount");
-			$table->date("expiration_date");
+			$table->dateTime("expiration_date");
 			$table->timestamps();
 		});
 	}
