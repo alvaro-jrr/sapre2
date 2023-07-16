@@ -149,39 +149,12 @@ class LoanController extends Controller {
 	 * Calculates the amount to pay for each fee.
 	 */
 	private function calculateFeeAmount(Loan $loan): float {
-		$rate = $this->getRateByModality($loan);
+		$rate = $loan->interest_rate / 100;
 
 		$numerator = $loan->amount * $rate;
 		$denominator = 1 - (1 + $rate) ** -$loan->number_of_fees;
 
 		return round($numerator / $denominator, 2);
-	}
-
-	/**
-	 * Gets the rate based on the loan modality.
-	 */
-	private function getRateByModality(Loan $loan): float {
-		$modality = $loan->modality;
-
-		// Returns the same interest rate as it's already yearly
-		if ($modality->slug == "yearly") {
-			return $loan->interest_rate / 100;
-		}
-
-		$periodsByYear = 1;
-
-		switch ($modality->slug) {
-			case "biweekly":
-				$periodsByYear = 24;
-				break;
-
-			case "monthly":
-				$periodsByYear = 12;
-				break;
-		}
-
-		// Converts interest to rate according to the modality selected
-		return (1 + $loan->interest_rate / 100) ** (1 / $periodsByYear) - 1;
 	}
 
 	/**
