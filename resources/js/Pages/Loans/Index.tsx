@@ -9,6 +9,7 @@ import { Loan, Modality, PageProps, Status, User } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { DataTableRowActions } from "./Partials/DataTableRowActions";
 
 type LoanDisplay = Omit<Loan, "user_id" | "modality_id" | "status_id"> & {
 	user: Omit<User, "email_verified_at">;
@@ -91,6 +92,14 @@ const columns = [
 		},
 		enableSorting: false,
 		enableHiding: false,
+	}),
+	columnHelper.accessor("id", {
+		header: "",
+		cell: ({ row }) => (
+			<div className="flex justify-end">
+				<DataTableRowActions row={row} />
+			</div>
+		),
 	}),
 ];
 

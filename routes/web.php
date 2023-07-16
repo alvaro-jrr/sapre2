@@ -92,6 +92,10 @@ Route::middleware("auth")->group(function () {
 		->only(["create", "store"])
 		->middleware("can:create loans");
 
+	Route::resource("loans", LoanController::class)
+		->only(["destroy"])
+		->middleware("can:delete loans");
+
 	Route::get("loans/request", [LoanController::class, "request"])
 		->name("loans.request")
 		->middleware("can:request loans");
