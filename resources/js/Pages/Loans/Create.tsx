@@ -7,18 +7,24 @@ import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent } from "@/Components/ui/card";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 
 export default function Create({
 	auth,
 	users,
 	modalities,
 }: PageProps<{ users: User[]; modalities: Modality[] }>) {
+	const initialModality = modalities[0];
+
+	const [interestModalityName, setInterestModalityName] = useState(
+		initialModality.name
+	);
+
 	// Form controls
 	const { data, setData, post, processing, errors } = useForm({
 		client: "",
 		amount: "",
-		modality: String(modalities[0].id),
+		modality: `${initialModality.id}`,
 		number_of_fees: "",
 		interest_rate: "",
 	});
@@ -58,7 +64,7 @@ export default function Create({
 								}}
 								options={users.map((user) => ({
 									label: `${user.name} (${user.email})`,
-									value: String(user.id),
+									value: `${user.id}`,
 								}))}
 								errorMessage={errors.client}
 							/>
@@ -84,13 +90,25 @@ export default function Create({
 								labelProps={{ children: "Modalidades de Pago" }}
 								radioGroupProps={{
 									value: data.modality,
-									onValueChange: (value) =>
-										setData("modality", value),
+									onValueChange: (value) => {
+										setData("modality", value);
+
+										const modality = modalities.find(
+											({ id }) => `${id}` === value
+										);
+
+										// Update the interest modality name
+										if (modality) {
+											setInterestModalityName(
+												modality.name
+											);
+										}
+									},
 									required: true,
 								}}
 								options={modalities.map((modality) => ({
 									label: modality.name,
-									value: String(modality.id),
+									value: `${modality.id}`,
 								}))}
 							/>
 
@@ -117,8 +135,7 @@ export default function Create({
 							<TextField
 								id="interest_rate"
 								labelProps={{
-									children:
-										"Tasa de Interés Efectiva Anual (%)",
+									children: `Tasa Efectiva ${interestModalityName} (%)`,
 								}}
 								inputProps={{
 									name: "interest_rate",
