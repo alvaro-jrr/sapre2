@@ -66,9 +66,9 @@ class LoanController extends Controller {
 	public function store(Request $request) {
 		$validate = $request->validate([
 			"client" => "required|exists:users,id",
-			"amount" => "required|numeric|min:1",
+			"amount" => "required|numeric|min:1|decimal:0,2",
 			"modality" => "required|exists:modalities,id",
-			"interest_rate" => "required|numeric|between:1,100",
+			"interest_rate" => "required|numeric|between:1,100|decimal:0,2",
 			"number_of_fees" => "required|numeric|min:1",
 		]);
 
