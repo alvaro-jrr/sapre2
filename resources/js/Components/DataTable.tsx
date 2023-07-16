@@ -32,20 +32,19 @@ interface DataTableProps<TData, ToolbarProps> {
 	columns: ColumnDef<TData, any>[];
 	data: TData[];
 	initialState?: InitialTableState;
-	toolbarProps?: ToolbarProps;
-	Toolbar?: (
-		props:
-			| (ToolbarProps & { table: TableType<TData> })
-			| { table: TableType<TData> }
-	) => React.ReactNode;
+	toolbar?: {
+		props?: ToolbarProps;
+		Component: (
+			props: { table: TableType<TData> } & ToolbarProps
+		) => React.ReactNode;
+	};
 }
 
 export function DataTable<TData, ToolbarProps>({
 	columns,
 	data,
 	initialState,
-	toolbarProps,
-	Toolbar,
+	toolbar,
 }: DataTableProps<TData, ToolbarProps>) {
 	const [columnVisibility, setColumnVisibility] =
 		React.useState<VisibilityState>({});
@@ -75,9 +74,13 @@ export function DataTable<TData, ToolbarProps>({
 		getFacetedUniqueValues: getFacetedUniqueValues(),
 	});
 
+	const toolbarProps = toolbar?.props || ({} as ToolbarProps);
+
 	return (
 		<div className="space-y-4">
-			{Toolbar ? <Toolbar table={table} {...toolbarProps} /> : null}
+			{toolbar ? (
+				<toolbar.Component table={table} {...toolbarProps} />
+			) : null}
 
 			<div className="rounded-md border">
 				<Table className="relative">

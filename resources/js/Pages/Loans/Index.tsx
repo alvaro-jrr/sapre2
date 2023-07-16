@@ -10,6 +10,7 @@ import { Head, Link } from "@inertiajs/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { DataTableRowActions } from "./Partials/DataTableRowActions";
+import { DataTableToolbar } from "./Partials/DataTableToolBar";
 
 type LoanDisplay = Omit<Loan, "user_id" | "modality_id" | "status_id"> & {
 	user: Omit<User, "email_verified_at">;
@@ -84,6 +85,7 @@ const columns = [
 		enableHiding: false,
 	}),
 	columnHelper.accessor("status.name", {
+		id: "status",
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Estatus" />
 		),
@@ -92,6 +94,9 @@ const columns = [
 		},
 		enableSorting: false,
 		enableHiding: false,
+		filterFn: (row, id, value) => {
+			return value.includes(row.getValue(id));
+		},
 	}),
 	columnHelper.accessor("id", {
 		header: "",
@@ -114,8 +119,10 @@ const ownLoansColumns = columns.filter((column) => {
 export default function Index({
 	auth,
 	loans,
+	statuses,
 }: PageProps<{
 	loans: LoanDisplay[];
+	statuses: Status[];
 }>) {
 	const canCreateLoans = can(auth.user, "create loans");
 
@@ -160,6 +167,12 @@ export default function Index({
 				columns={
 					can(auth.user, "view own loans") ? ownLoansColumns : columns
 				}
+				toolbar={{
+					props: {
+						statuses,
+					},
+					Component: DataTableToolbar,
+				}}
 			/>
 		</AuthenticatedLayout>
 	);

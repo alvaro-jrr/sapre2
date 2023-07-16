@@ -103,7 +103,9 @@ export default function Index({
 			<DataTable
 				data={users}
 				columns={columns}
-				Toolbar={DataTableToolbar}
+				toolbar={{
+					Component: DataTableToolbar,
+				}}
 			/>
 		</AuthenticatedLayout>
 	);
