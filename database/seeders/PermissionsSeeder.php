@@ -6,15 +6,15 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class PermissionsSeeder extends Seeder {
+class PermissionsSeeder extends Seeder
+{
 	/**
 	 * Run the database seeds.
 	 */
-	public function run(): void {
+	public function run(): void
+	{
 		// Reset cached roles and permissions
-		app()[
-			\Spatie\Permission\PermissionRegistrar::class
-		]->forgetCachedPermissions();
+		app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
 		$permissionsNames = [
 			// Users
@@ -47,6 +47,10 @@ class PermissionsSeeder extends Seeder {
 			"edit payments",
 			"approve or decline payments",
 			"delete payments",
+
+			// Fees
+			"view fees",
+			"view own fees"
 		];
 
 		$permissions = collect($permissionsNames)->map(function ($permission) {
@@ -82,7 +86,10 @@ class PermissionsSeeder extends Seeder {
 			"view payments",
 			"edit payments",
 			"approve or decline payments",
-			"delete payments"
+			"delete payments",
+
+			// Fees
+			"view fees"
 		);
 
 		Role::create(["name" => "employee"])->givePermissionTo([
@@ -98,6 +105,9 @@ class PermissionsSeeder extends Seeder {
 			// Payments
 			"view payments",
 			"approve or decline payments",
+
+			// Fees
+			"view fees"
 		]);
 
 		Role::create(["name" => "client"])->givePermissionTo([
@@ -109,6 +119,9 @@ class PermissionsSeeder extends Seeder {
 			// Payments
 			"create payments",
 			"view own payments",
+
+			// Fees
+			"view own fees"
 		]);
 	}
 }
