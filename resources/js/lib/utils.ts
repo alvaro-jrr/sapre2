@@ -1,5 +1,8 @@
 import type { UserRole, UserWithRoles } from "@/types";
+import { FilterFn } from "@tanstack/react-table";
 import { type ClassValue, clsx } from "clsx";
+import { addDays, isAfter, isBefore } from "date-fns";
+import { DateRange } from "react-day-picker";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -57,3 +60,22 @@ export function canDoAny(user: UserWithRoles, permissions: string[]): boolean {
 		permissions.includes(permission)
 	);
 }
+
+/**
+ * Filter rows by date
+ */
+export const dateRangeFilter: FilterFn<any> = (
+	row,
+	columnId,
+	value?: DateRange
+) => {
+	const date = new Date(row.getValue(columnId));
+
+	if (!value || !value.from) return true;
+
+	// Only dates after the selected date are displayed
+	if (!value.to) return isAfter(date, value.from);
+
+	// Only dates between range dates (inclusive)
+	return isAfter(date, value.from) && isBefore(date, addDays(value.to, 1));
+};

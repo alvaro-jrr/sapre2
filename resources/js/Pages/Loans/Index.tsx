@@ -4,7 +4,7 @@ import Header from "@/Components/Header";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { can } from "@/lib/utils";
+import { can, dateRangeFilter } from "@/lib/utils";
 import { Loan, Modality, PageProps, Status, User } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -23,8 +23,9 @@ const columnHelper = createColumnHelper<LoanDisplay>();
 // The columns to display
 const columns = [
 	columnHelper.accessor("created_at", {
+		id: "created_at",
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Fecha" />
+			<DataTableColumnHeader column={column} title="Fecha de Creación" />
 		),
 		cell: (info) => {
 			const date = info.getValue();
@@ -33,6 +34,7 @@ const columns = [
 		},
 		enableHiding: false,
 		enableSorting: false,
+		filterFn: dateRangeFilter,
 	}),
 	columnHelper.accessor("approved_date", {
 		header: ({ column }) => (

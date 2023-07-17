@@ -2,9 +2,9 @@ import { X } from "lucide-react";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/Components/ui/button";
-import { Input } from "@/Components/ui/input";
 import { DataTableFacetedFilter } from "@/Components/DataTableFacetedFilter";
 import { Status } from "@/types";
+import { DataTableDateRangeFilter } from "@/Components/DataTableDateRangeFilter";
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>;
@@ -17,12 +17,20 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
 	const isFiltered = table.getState().columnFilters.length > 0;
 
-	if (!table.getColumn("status")) return null;
+	if (!table.getColumn("status") && !table.getColumn("created_at")) {
+		return null;
+	}
 
 	return (
 		<div className="flex items-center justify-between">
 			<div className="flex flex-1 items-center space-x-2">
-				{table.getColumn("status") && (
+				{table.getColumn("created_at") ? (
+					<DataTableDateRangeFilter
+						column={table.getColumn("created_at")}
+					/>
+				) : null}
+
+				{table.getColumn("status") ? (
 					<DataTableFacetedFilter
 						column={table.getColumn("status")}
 						title="Estatus"
@@ -31,7 +39,7 @@ export function DataTableToolbar<TData>({
 							value: `${status.name}`,
 						}))}
 					/>
-				)}
+				) : null}
 
 				{isFiltered && (
 					<Button
