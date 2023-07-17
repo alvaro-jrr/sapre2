@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LoanRequestController;
 use App\Http\Controllers\ProfileController;
@@ -99,6 +100,12 @@ Route::middleware("auth")->group(function () {
 	Route::get("loans/request", [LoanController::class, "request"])
 		->name("loans.request")
 		->middleware("can:request loans");
+});
+
+Route::middleware("auth")->group(function () {
+	Route::resource("fees", FeeController::class)
+		->only(["index"])
+		->middleware("permission:view loans|view own loans");
 });
 
 require __DIR__ . "/auth.php";
