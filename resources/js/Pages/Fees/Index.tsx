@@ -15,7 +15,7 @@ const columnHelper = createColumnHelper<FeeDisplay>();
 const columns = [
 	columnHelper.accessor("loan_id", {
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Préstamo" />
+			<DataTableColumnHeader column={column} title="# Préstamo" />
 		),
 		cell: (info) => info.getValue(),
 		enableHiding: false,
