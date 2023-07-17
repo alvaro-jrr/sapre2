@@ -41,6 +41,7 @@ class LoanController extends Controller {
 		return Inertia::render("Loans/Index", [
 			"loans" => $loans,
 			"statuses" => Status::all(),
+			"modalities" => Modality::all(),
 		]);
 	}
 

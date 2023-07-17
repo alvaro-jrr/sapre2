@@ -65,12 +65,16 @@ const columns = [
 	}),
 
 	columnHelper.accessor("modality.name", {
+		id: "modality",
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Modalidad" />
 		),
 		cell: (info) => info.getValue(),
 		enableHiding: false,
 		enableSorting: false,
+		filterFn: (row, id, value) => {
+			return value.includes(row.getValue(id));
+		},
 	}),
 	columnHelper.accessor("number_of_fees", {
 		header: ({ column }) => (
@@ -122,9 +126,11 @@ export default function Index({
 	auth,
 	loans,
 	statuses,
+	modalities,
 }: PageProps<{
 	loans: LoanDisplay[];
 	statuses: Status[];
+	modalities: Modality[];
 }>) {
 	const canCreateLoans = can(auth.user, "create loans");
 
@@ -172,6 +178,7 @@ export default function Index({
 				toolbar={{
 					props: {
 						statuses,
+						modalities,
 					},
 					Component: DataTableToolbar,
 				}}
