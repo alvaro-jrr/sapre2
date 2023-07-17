@@ -13,11 +13,13 @@ export function DatePickerWithRange({
 	className,
 	label,
 	selected,
+	buttonClassName,
 	onSelectDateRange,
 }: React.HTMLAttributes<HTMLDivElement> & {
 	dateRange?: DateRange;
 	label?: string;
 	selected?: DayPickerRangeProps["selected"];
+	buttonClassName?: string;
 	onSelectDateRange?: DayPickerRangeProps["onSelect"];
 }) {
 	return (
@@ -29,7 +31,8 @@ export function DatePickerWithRange({
 						variant={"outline"}
 						className={cn(
 							"w-[300px] justify-start text-left font-normal",
-							!selected && "text-muted-foreground"
+							!selected && "text-muted-foreground",
+							buttonClassName
 						)}
 					>
 						<CalendarIcon className="mr-2 h-4 w-4" />

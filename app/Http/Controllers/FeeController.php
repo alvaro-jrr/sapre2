@@ -12,20 +12,23 @@ use Inertia\Response;
 class FeeController extends Controller {
 	public function index(): Response {
 		$user = Auth::user();
+		$hidden = ["created_at", "updated_at"];
 
 		if ($user->can("view own fees")) {
 			$fees = [];
 			$loans = $user->loans->pluck("id");
 
 			foreach ($loans as $loan) {
-				$fee = Fee::all()->where("loan_id", "=", $loan);
+				$fee = Fee::all()
+					->makeHidden($hidden)
+					->where("loan_id", "=", $loan);
 
 				array_push($fees, ...$fee);
 			}
 		}
 
 		if ($user->can("view fees")) {
-			$fees = Fee::all();
+			$fees = Fee::all()->makeHidden($hidden);
 		}
 
 		return inertia::render("Fees/Index", [

@@ -7,6 +7,7 @@ import { Modality, Status } from "@/types";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/Components/DateRangePicker";
+import { Input } from "@/Components/ui/input";
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>;
@@ -25,24 +26,46 @@ export function DataTableToolbar<TData>({
 	if (
 		!table.getColumn("status") &&
 		!table.getColumn("created_at") &&
-		!table.getColumn("modality")
+		!table.getColumn("modality") &&
+		!table.getColumn("loan_id")
 	) {
 		return null;
 	}
 
 	return (
-		<div className="flex flex-col justify-start gap-2 md:flex-row md:items-center">
-			{table.getColumn("created_at") ? (
-				<DatePickerWithRange
-					label="Seleccione una fecha"
-					selected={dateRange}
-					onSelectDateRange={(value) => {
-						table.getColumn("created_at")?.setFilterValue(value);
-
-						setDateRange(value);
-					}}
+		<div className="flex flex-col justify-start gap-2 lg:flex-row lg:items-center">
+			<div className="flex flex-col gap-2 lg:flex-row">
+				<Input
+					placeholder="Filtra por # de préstamo"
+					value={
+						(table
+							.getColumn("loan_id")
+							?.getFilterValue() as string) ?? ""
+					}
+					type="number"
+					onChange={(event) =>
+						table
+							.getColumn("loan_id")
+							?.setFilterValue(event.target.value)
+					}
+					className="w-full lg:w-[250px]"
 				/>
-			) : null}
+
+				{table.getColumn("created_at") ? (
+					<DatePickerWithRange
+						label="Seleccione una fecha"
+						selected={dateRange}
+						buttonClassName="w-full lg:w-[250px]"
+						onSelectDateRange={(value) => {
+							table
+								.getColumn("created_at")
+								?.setFilterValue(value);
+
+							setDateRange(value);
+						}}
+					/>
+				) : null}
+			</div>
 
 			<div className="flex gap-x-2">
 				{table.getColumn("status") ? (

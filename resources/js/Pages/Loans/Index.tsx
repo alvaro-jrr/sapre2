@@ -22,10 +22,24 @@ const columnHelper = createColumnHelper<LoanDisplay>();
 
 // The columns to display
 const columns = [
+	columnHelper.accessor("id", {
+		id: "loan_id",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="#" />
+		),
+		cell: (info) => info.getValue(),
+		enableHiding: false,
+		enableSorting: false,
+		filterFn: (row, columnId, value: string) => {
+			const id = String(row.getValue(columnId));
+
+			return id.startsWith(value);
+		},
+	}),
 	columnHelper.accessor("created_at", {
 		id: "created_at",
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Fecha de Creación" />
+			<DataTableColumnHeader column={column} title="Creación" />
 		),
 		cell: (info) => {
 			const date = info.getValue();
@@ -38,10 +52,7 @@ const columns = [
 	}),
 	columnHelper.accessor("approved_date", {
 		header: ({ column }) => (
-			<DataTableColumnHeader
-				column={column}
-				title="Fecha de Aprobación"
-			/>
+			<DataTableColumnHeader column={column} title="Aprobación" />
 		),
 		cell: (info) => {
 			const date = info.getValue();

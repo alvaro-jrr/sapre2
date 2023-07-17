@@ -79,3 +79,17 @@ export const dateRangeFilter: FilterFn<any> = (
 	// Only dates between range dates (inclusive)
 	return isAfter(date, value.from) && isBefore(date, addDays(value.to, 1));
 };
+
+/**
+ * Returns the search params of current route
+ *
+ * @param url The current url route
+ * @param baseUrl The base url
+ * @returns The search params of current url
+ */
+export function getSearchParams(
+	url: string,
+	baseUrl = window.location.origin
+): URLSearchParams {
+	return new URL(url, baseUrl).searchParams;
+}
