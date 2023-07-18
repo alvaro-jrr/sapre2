@@ -74,6 +74,13 @@ const columns = [
 		enableHiding: false,
 		enableSorting: false,
 	}),
+	columnHelper.accessor("amount", {
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Cantidad" />
+		),
+		cell: (info) => info.getValue(),
+		enableHiding: false,
+	}),
 
 	columnHelper.accessor("modality.name", {
 		id: "modality",
