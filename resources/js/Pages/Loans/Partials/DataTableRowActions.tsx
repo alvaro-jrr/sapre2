@@ -43,14 +43,16 @@ export function DataTableRowActions<TData>({
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent align="end" className="w-[160px]">
-				{can(auth.user, "edit users") ? (
-					<DropdownMenuItem>
-						<Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-						Editar
+				{can(auth.user, "edit loans") ? (
+					<DropdownMenuItem asChild>
+						<Link href={route("loans.edit", loanId)}>
+							<Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+							Editar
+						</Link>
 					</DropdownMenuItem>
 				) : null}
 
-				{can(auth.user, "delete users") ? (
+				{can(auth.user, "delete loans") ? (
 					<>
 						<DropdownMenuSeparator />
 

@@ -170,14 +170,49 @@ class LoanController extends Controller {
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(Loan $loan) {
-		//
+		return Inertia::render("Loans/Edit", [
+			"loan" => $loan,
+			"user" => $loan->user,
+			"modalities" => Modality::all(),
+		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
 	public function update(Request $request, Loan $loan) {
-		//
+		$validate = $request->validate([
+			"client" => "required|exists:users,id",
+			"amount" => "required|numeric|min:1|decimal:0,2",
+			"modality" => "required|exists:modalities,id",
+			"interest_rate" => "required|numeric|between:1,100|decimal:0,2",
+			"number_of_fees" => "required|numeric|min:1",
+		]);
+
+		$loan->update([
+			"amount" => $validate["amount"],
+			"interest_rate" => $validate["interest_rate"],
+			"number_of_fees" => $validate["number_of_fees"],
+		]);
+
+		// Associate models
+		$loan->user()->associate($validate["client"]);
+		$loan->modality()->associate($validate["modality"]);
+
+		// Store the loan and create associated fees
+		$loan->save();
+
+		// Remove previous fees
+		$fees = $loan->fees;
+
+		foreach ($fees as $fee) {
+			$fee->delete();
+		}
+
+		// Assign new fees
+		$this->createFees($loan);
+
+		return redirect(route("loans.index"));
 	}
 
 	/**
