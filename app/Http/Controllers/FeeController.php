@@ -21,14 +21,17 @@ class FeeController extends Controller {
 			foreach ($loans as $loan) {
 				$fee = Fee::all()
 					->makeHidden($hidden)
-					->where("loan_id", "=", $loan);
+					->where("loan_id", "=", $loan)
+					->where("is_paid", "=", false);
 
 				array_push($fees, ...$fee);
 			}
 		}
 
 		if ($user->can("view fees")) {
-			$fees = Fee::all()->makeHidden($hidden);
+			$fees = Fee::all()
+				->makeHidden($hidden)
+				->where("is_paid", "=", false);
 		}
 
 		return inertia::render("Fees/Index", [

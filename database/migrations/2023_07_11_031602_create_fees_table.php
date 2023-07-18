@@ -19,6 +19,7 @@ return new class extends Migration {
 
 			$table->double("amount");
 			$table->dateTime("expiration_date");
+			$table->boolean("is_paid")->default(false);
 			$table->timestamps();
 		});
 	}

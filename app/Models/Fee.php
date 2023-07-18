@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Fee extends Model {
 	use HasFactory;
 
-	protected $fillable = ["amount", "expiration_date"];
+	protected $fillable = ["amount", "expiration_date", "is_paid"];
 
 	/**
 	 * Get the loan paid by the fee.
