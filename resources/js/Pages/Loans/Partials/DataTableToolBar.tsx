@@ -42,20 +42,19 @@ export function DataTableToolbar<TData>({
 							.getColumn("loan_id")
 							?.getFilterValue() as string) ?? ""
 					}
-					type="number"
 					onChange={(event) =>
 						table
 							.getColumn("loan_id")
 							?.setFilterValue(event.target.value)
 					}
-					className="w-full lg:w-[250px]"
+					className="h-8 w-full lg:w-[250px]"
 				/>
 
 				{table.getColumn("created_at") ? (
 					<DatePickerWithRange
 						label="Seleccione una fecha"
 						selected={dateRange}
-						buttonClassName="w-full lg:w-[250px]"
+						buttonClassName="w-full h-8 lg:w-[250px]"
 						onSelectDateRange={(value) => {
 							table
 								.getColumn("created_at")
