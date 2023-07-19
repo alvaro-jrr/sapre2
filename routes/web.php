@@ -3,6 +3,7 @@
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LoanRequestController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -114,6 +115,12 @@ Route::middleware("auth")->group(function () {
 	Route::resource("fees", FeeController::class)
 		->only(["index"])
 		->middleware("permission:view loans|view own loans");
+});
+
+Route::middleware("auth")->group(function () {
+	Route::resource("payments", PaymentController::class)
+		->only(["index"])
+		->middleware("permission:view payments|view own payments");
 });
 
 require __DIR__ . "/auth.php";

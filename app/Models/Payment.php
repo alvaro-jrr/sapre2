@@ -6,29 +6,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Payment extends Model
-{
-    use HasFactory;
+class Payment extends Model {
+	use HasFactory;
 
-    protected $fillable = [
-        "date",
-        "is_cash".
-        "is_valid",
-        "comment",
-    ];
+	protected $fillable = ["date", "is_cash" . "is_valid", "comment"];
 
-    /**
-	 * Get the payment deposit
+	/**
+	 * Get the payment deposit.
 	 */
-    public function deposits(): HasMany {
-		return $this->hasMany(Deposit::class);
+	public function deposit(): HasOne {
+		return $this->hasOne(Deposit::class);
 	}
 
-    /**
-	 * Get the payment fees
+	/**
+	 * Get the fee paid by the this payment.
 	 */
-    public function fees(): BelongsTo {
+	public function fee(): BelongsTo {
 		return $this->belongsTo(Fee::class);
+	}
+
+	/**
+	 * Get the status of the loan.
+	 */
+	public function status(): BelongsTo {
+		return $this->belongsTo(Status::class);
 	}
 }

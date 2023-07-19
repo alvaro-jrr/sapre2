@@ -45,6 +45,12 @@ const links: {
 		permission: ["view fees", "view own fees"],
 		baseRoute: "/fees",
 	},
+	{
+		title: "Pagos",
+		href: "payments.index",
+		permission: ["view payments", "view own payments"],
+		baseRoute: "/payments",
+	},
 ];
 
 const hasPermission = (user: UserWithRoles, permission?: string | string[]) => {

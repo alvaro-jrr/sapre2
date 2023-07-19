@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use Inertia\Inertia;
 
-class PaymentController extends Controller
-{
-    /**
+class PaymentController extends Controller {
+	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-	    //
+		return Inertia::render("Payments/Index", [
+			"payments" => [],
+		]);
 	}
 
 	/**
@@ -56,6 +57,6 @@ class PaymentController extends Controller
 	public function destroy(Payment $payment) {
 		$payment->delete();
 
-	 	return redirect(route("payment.index"));
-	 }
+		return redirect(route("payment.index"));
+	}
 }

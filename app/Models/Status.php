@@ -19,4 +19,11 @@ class Status extends Model {
 	public function loans(): HasMany {
 		return $this->hasMany(Loan::class);
 	}
+
+	/**
+	 * Get the payments that have this status.
+	 */
+	public function payments(): HasMany {
+		return $this->hasMany(Payment::class);
+	}
 }
