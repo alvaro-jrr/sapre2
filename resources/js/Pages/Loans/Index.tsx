@@ -12,7 +12,10 @@ import { format } from "date-fns";
 import { DataTableRowActions } from "./Partials/DataTableRowActions";
 import { DataTableToolbar } from "./Partials/DataTableToolBar";
 
-type LoanDisplay = Omit<Loan, "user_id" | "modality_id" | "status_id"> & {
+export type LoanDisplay = Omit<
+	Loan,
+	"user_id" | "modality_id" | "status_id"
+> & {
 	user: Omit<User, "email_verified_at">;
 	modality: Modality;
 	status: Status;

@@ -1,7 +1,7 @@
 import type { Row } from "@tanstack/react-table";
 import type { PageProps } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
-import { MoreHorizontal, Pen, Trash } from "lucide-react";
+import { Download, MoreHorizontal, Pen, Trash } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import {
 	DropdownMenu,
@@ -11,6 +11,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { can, canDoAny } from "@/lib/utils";
+import { LoanDisplay } from "../Index";
 
 interface DataTableRowActionsProps<TData> {
 	row: Row<TData>;
@@ -26,7 +27,14 @@ export function DataTableRowActions<TData>({
 	const loanId: number = row.getValue("id");
 
 	// In case user can't do any of the actions
-	if (!canDoAny(auth.user, ["edit loans", "delete loans"])) {
+	if (
+		!canDoAny(auth.user, [
+			"edit loans",
+			"delete loans",
+			"download contracts",
+			"download own contracts",
+		])
+	) {
 		return null;
 	}
 
@@ -43,6 +51,21 @@ export function DataTableRowActions<TData>({
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent align="end" className="w-[160px]">
+				{canDoAny(auth.user, [
+					"download contracts",
+					"download own contracts",
+				]) ? (
+					<DropdownMenuItem asChild>
+						<a
+							target="__blank"
+							href={route("loans.contract", loanId)}
+						>
+							<Download className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+							Contrato
+						</a>
+					</DropdownMenuItem>
+				) : null}
+
 				{can(auth.user, "edit loans") ? (
 					<DropdownMenuItem asChild>
 						<Link href={route("loans.edit", loanId)}>

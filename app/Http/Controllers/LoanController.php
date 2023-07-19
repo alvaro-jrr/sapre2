@@ -224,7 +224,9 @@ class LoanController extends Controller {
 			"loan" => $loan,
 		]);
 
-		return $pdf->stream("contract_{$loan->id}.pdf");
+		$now = now();
+
+		return $pdf->stream("Contrato #{$loan->id} - {$now}.pdf");
 	}
 
 	/**
