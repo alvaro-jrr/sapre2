@@ -1,7 +1,4 @@
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import TextField from "@/Components/TextField";
@@ -28,7 +25,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 			<Head title="Olvidé mi Contraseña" />
 
 			{status && (
-				<div className="mb-4 font-medium text-sm text-green-600">
+				<div className="mb-4 text-sm font-medium text-green-600">
 					{status}
 				</div>
 			)}
@@ -50,8 +47,8 @@ export default function ForgotPassword({ status }: { status?: string }) {
 					errorMessage={errors.email}
 				/>
 
-				<div className="flex items-center justify-end mt-4">
-					<Button>Enviar enlace</Button>
+				<div className="mt-4 flex items-center justify-end">
+					<Button disabled={processing}>Enviar enlace</Button>
 				</div>
 			</form>
 		</GuestLayout>
