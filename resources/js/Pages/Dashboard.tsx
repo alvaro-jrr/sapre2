@@ -7,11 +7,14 @@ export default function Dashboard({ auth }: PageProps) {
 	return (
 		<AuthenticatedLayout
 			user={auth.user}
-			header={<Header title="Dashboard" />}
+			header={
+				<Header
+					title="Dashboard"
+					description="Ten una visión general de los préstamos, cuotas y pagos realizados."
+				/>
+			}
 		>
 			<Head title="Dashboard" />
-
-			<p>You're logged in!</p>
 		</AuthenticatedLayout>
 	);
 }
