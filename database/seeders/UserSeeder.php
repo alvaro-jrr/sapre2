@@ -13,30 +13,33 @@ class UserSeeder extends Seeder {
 	 * Run the database seeds.
 	 */
 	public function run(): void {
-		$user = new User([
-			"email" => "admin@gmail.com",
-			"password" => Hash::make("123"),
-			"name" => "Admin",
-		]);
-		$user->saveOrFail();
+		$users = [
+			[
+				"email" => "alvarojrr79@gmail.com",
+				"password" => Hash::make("12345678"),
+				"name" => "Alvaro Resplandor",
+			],
+			[
+				"email" => "cabrerasluis67@gmail.com",
+				"password" => Hash::make("12345678"),
+				"name" => "Luis Cabrera",
+			],
+			[
+				"email" => "yesianlarenas@gmail.com",
+				"password" => Hash::make("12345678"),
+				"name" => "Yesenia Larenas",
+			],
+			[
+				"email" => "julianlopezcastillo12@gmail.com",
+				"password" => Hash::make("12345678"),
+				"name" => "Julian Lopez",
+			],
+		];
 
-		$user = new User([
-			"email" => "employer@gmail.com",
-			"password" => Hash::make("321"),
-			"name" => "Employer",
-		]);
-		$user->saveOrFail();
-
-		$user = new User([
-			"email" => "client@gmail.com",
-			"password" => Hash::make("331"),
-			"name" => "Client+",
-		]);
-		$user->saveOrFail();
-
-		// Assign each role to the first three users
-		User::find(1)->assignRole("admin");
-		User::find(2)->assignRole("employee");
-		User::find(3)->assignRole("client");
+		// Create admin users
+		foreach ($users as $user) {
+			$user = User::create($user);
+			$user->assignRole("admin");
+		}
 	}
 }
