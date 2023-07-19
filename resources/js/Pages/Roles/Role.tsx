@@ -9,7 +9,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Header from "@/Components/Header";
 import TextField from "@/Components/TextField";
 import CheckboxField from "@/Components/CheckboxField";
-import { can } from "@/lib/utils";
+import { can, getSearchParams } from "@/lib/utils";
 
 export default function Role({
 	auth,
@@ -22,7 +22,8 @@ export default function Role({
 	rolePermissions: { [key: string]: boolean };
 }>) {
 	const { url } = usePage();
-	const editingDefaultValue = url.includes("edit=true") || false;
+	const searchParams = getSearchParams(url);
+	const editingDefaultValue = Boolean(searchParams.get("edit"));
 	const canEditRoles = can(auth.user, "edit roles");
 
 	// Editing state
