@@ -121,6 +121,10 @@ Route::middleware("auth")->group(function () {
 	Route::resource("payments", PaymentController::class)
 		->only(["index"])
 		->middleware("permission:view payments|view own payments");
+
+	Route::resource("payments", PaymentController::class)
+		->only(["create", "store"])
+		->middleware("permission:create payments");
 });
 
 require __DIR__ . "/auth.php";
