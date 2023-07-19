@@ -175,18 +175,18 @@ export default function NavBar({
 							</Link>
 						</div>
 
-						<div className="hidden sm:flex">
+						<div className="hidden lg:flex">
 							<Menu user={user} />
 						</div>
 					</div>
 
-					<div className="hidden sm:ml-6 sm:flex sm:items-center">
+					<div className="hidden lg:ml-6 lg:flex lg:items-center">
 						<div className="relative ml-3">
 							<UserNav user={user} />
 						</div>
 					</div>
 
-					<div className="flex items-center sm:hidden">
+					<div className="flex items-center lg:hidden">
 						<Button
 							variant="ghost"
 							size="icon"
@@ -209,7 +209,7 @@ export default function NavBar({
 			<div
 				className={cn(
 					showingNavigationDropdown ? "block" : "hidden",
-					"sm:hidden"
+					"lg:hidden"
 				)}
 			>
 				<MobileMenu user={user} />
