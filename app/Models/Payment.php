@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Payment extends Model {
 	use HasFactory;
 
-	protected $fillable = ["date", "is_cash" . "is_valid", "comment"];
+	protected $fillable = ["date", "is_cash" . "is_valid"];
 
 	/**
 	 * Get the payment deposit.
