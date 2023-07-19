@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Loan;
 use Inertia\Inertia;
 use Inertia\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LoanController extends Controller {
 	/**
@@ -213,6 +214,17 @@ class LoanController extends Controller {
 		$this->createFees($loan);
 
 		return redirect(route("loans.index"));
+	}
+
+	/**
+	 * Generate a PDF with the contract of the specified loan.
+	 */
+	public function contract(Loan $loan) {
+		$pdf = Pdf::loadView("contract", [
+			"loan" => $loan,
+		]);
+
+		return $pdf->stream("contract_{$loan->id}.pdf");
 	}
 
 	/**

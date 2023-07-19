@@ -104,6 +104,10 @@ Route::middleware("auth")->group(function () {
 	Route::get("loans/request", [LoanController::class, "request"])
 		->name("loans.request")
 		->middleware("can:request loans");
+
+	Route::get("loans/contract/{loan}", [LoanController::class, "contract"])
+		->name("loans.contract")
+		->middleware("permission:download contracts|download own contracts");
 });
 
 Route::middleware("auth")->group(function () {
